@@ -3,7 +3,8 @@
   "description": "Widgets built using Timbits",
   "version": "0.0.1",
   "dependencies": {
-    "timbits": "0.7.2"
+    "timbits": "0.7.2",
+    "memjs": "0.8.5"
   },
   "scripts": {
     "start": "node server.js"
