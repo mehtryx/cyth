@@ -1,0 +1,17 @@
+{
+  "name": "reflect",
+  "description": "Widgets built using Timbits",
+  "version": "0.0.1",
+  "dependencies": {
+    "timbits": "0.7.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
