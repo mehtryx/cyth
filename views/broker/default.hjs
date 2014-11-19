@@ -1,6 +1,2 @@
 <h1>Data as of {{lastWritten}}</h1>
 <div>{{data}}<div>
-	<h2>raw data</h2>
-	<div>{{val}}</div>
-	<h2>original data</h2>
-	<div>{{stored}}</div>

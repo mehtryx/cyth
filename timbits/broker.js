@@ -23,11 +23,10 @@ timbit.eat = function(req, res, context) {
 			data: jsondata
 		};
 		var storedJSON = JSON.stringify( stored );
+
 		client.set( 'stored', storedJSON, function(err, val) {
-			context.lastWritten = val.lastWritten;
-			context.data = val.stored;
-			context.val = util.inspect( val );
-			context.stored = util.inspect( stored, { showHidden: true, depth: null } );
+			context.lastWritten = stored.lastWritten;
+			context.data = stored.data;
 			timbit.render(req, res, context);
 		});
 	}
@@ -37,8 +36,6 @@ timbit.eat = function(req, res, context) {
 			var result = JSON.parse( val );
 			context.lastWritten = result.lastWritten;
 			context.data = result.data;
-
-
 			timbit.render(req,res,context);
 		} );
 	}
