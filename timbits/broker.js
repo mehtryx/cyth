@@ -25,6 +25,7 @@ timbit.eat = function(req, res, context) {
 		client.set( 'stored', stored, function(err, val) {
 			context.lastWritten = val.lastWritten;
 			context.data = val.stored;
+			context.val = util.inspect( val );
 			
 			timbit.render(req, res, context);
 		});
@@ -34,6 +35,7 @@ timbit.eat = function(req, res, context) {
 		client.get( 'stored', function( err, val ) {
 			context.lastWritten = val.lastWritten;
 			context.data = val.data;
+
 
 			timbit.render(req,res,context);
 		} );
