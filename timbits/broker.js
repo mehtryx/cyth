@@ -22,7 +22,8 @@ timbit.eat = function(req, res, context) {
 			lastWritten: now,
 			data: jsondata
 		};
-		client.set( 'stored', stored, function(err, val) {
+		var storedJSON = JSON.stringify( stored );
+		client.set( 'stored', storedJSON, function(err, val) {
 			context.lastWritten = val.lastWritten;
 			context.data = val.stored;
 			context.val = util.inspect( val );
@@ -33,8 +34,9 @@ timbit.eat = function(req, res, context) {
 	else {
 		// reading by default
 		client.get( 'stored', function( err, val ) {
-			context.lastWritten = val.lastWritten;
-			context.data = val.data;
+			var result = JSON.parse( val );
+			context.lastWritten = result.lastWritten;
+			context.data = result.data;
 
 
 			timbit.render(req,res,context);
