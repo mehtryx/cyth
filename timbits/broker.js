@@ -19,7 +19,7 @@ timbit.eat = function(req, res, context) {
 		var stored = {
 			lastWritten: now,
 			data: jsondata
-		}
+		};
 		client.set( 'stored', stored, function(err, val) {
 			context.lastWritten = val.lastWritten;
 			context.data = val.stored;
