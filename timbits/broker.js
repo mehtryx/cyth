@@ -3,6 +3,8 @@
 // load the timbits module
 var timbits = require('timbits');
 
+var util = require('util');
+
 // memcache
 var memjs = require('memjs');
 var client = memjs.Client.create();
@@ -15,7 +17,7 @@ timbit.eat = function(req, res, context) {
 
 	if ( req.query.write != undefined ) {
 		var now = new Date();
-		var jsondata = JSON.stringify( req.body );
+		var jsondata = JSON.stringify( util.inspect( req.body, { showHidden: true, depth: null } );
 		var stored = {
 			lastWritten: now,
 			data: jsondata
