@@ -26,7 +26,7 @@ timbit.eat = function(req, res, context) {
 			context.lastWritten = val.lastWritten;
 			context.data = val.stored;
 			context.val = util.inspect( val );
-			
+			context.stored = util.inspect( stored, { showHidden: true, depth: null } );
 			timbit.render(req, res, context);
 		});
 	}
