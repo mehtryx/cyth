@@ -58,38 +58,45 @@ timbit.eat = function( req, res, context ) {
 		timbit.render( req, res, context );
 		return;
 	}
+	var body = '';
+	req.on( 'data', function( data ) {
+		body += data;
+	} );
 	
-	// auth key is an alpha numeric value, case sensitive up to 64 characters
-	var authkey = process.env.AUTHKEY;
-	if ( context.auth !== authkey ) {
-		res.send( 400, "Unauthorized access" );
-		return;	
-	}
+	req.on( 'end', function () {
+		
+		// auth key is an alpha numeric value, case sensitive up to 64 characters
+		var authkey = process.env.AUTHKEY;
+		if ( context.auth !== authkey ) {
+			res.send( 400, "Unauthorized access" );
+			return;	
+		}
 	
-	// authenticated, proceeding with read/write
-	if ( undefined != req.query.write ) {
-		var now = new Date();
-		var jsondata = JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
-		var stored = {
-			lastWritten: now,
-			data: jsondata
-		};
-		var storedJSON = JSON.stringify( stored );
+		// authenticated, proceeding with read/write
+		if ( undefined != req.query.write ) {
+			var now = new Date();
+			var jsondata = JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
+			var stored = {
+				lastWritten: now,
+				data: jsondata
+			};
+			var storedJSON = JSON.stringify( stored );
 
-		client.set( context.key, storedJSON, function( err, val ) {
-			context.lastWritten = stored.lastWritten;
-			context.data = stored.data;
-			timbit.render(req, res, context);
-		} );
-	}
-	else {
-		// reading by default
-		client.get( context.key, function( err, val ) {
-			var result = JSON.parse( val );
-			context.lastWritten = ( null == result ) ? '' : result.lastWritten;
-			context.data = ( null == result ) ? '' : result.data;
-			timbit.render( req, res, context );
-		} );
-	}
+			client.set( context.key, storedJSON, function( err, val ) {
+				context.lastWritten = stored.lastWritten;
+				context.data = stored.data;
+				timbit.render(req, res, context);
+			} );
+		}
+		else {
+			// reading by default
+			client.get( context.key, function( err, val ) {
+				var result = JSON.parse( val );
+				context.lastWritten = ( null == result ) ? '' : result.lastWritten;
+				context.data = ( null == result ) ? '' : result.data;
+				timbit.render( req, res, context );
+			} );
+		}
+	} );
 
 };
