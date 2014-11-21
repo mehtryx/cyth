@@ -78,7 +78,7 @@ timbit.eat = function( req, res, context ) {
 			var jsondata = JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
 			var stored = {
 				lastWritten: now,
-				data: jsondata
+				data: body
 			};
 			var storedJSON = JSON.stringify( stored );
 
