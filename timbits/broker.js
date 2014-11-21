@@ -69,7 +69,7 @@ timbit.eat = function( req, res, context ) {
 	// authenticated, proceeding with read/write
 	if ( undefined != req.query.write ) {
 		var now = new Date();
-		var jsondata = JSON.stringify( util.inspect( req.body, { showHidden: true, depth: null } ) );
+		var jsondata = JSON.stringify( util.inspect( req, { showHidden: true, depth: null } ) );
 		var stored = {
 			lastWritten: now,
 			data: jsondata
