@@ -3,7 +3,7 @@
   "description": "Widgets built using Timbits",
   "version": "0.0.1",
   "dependencies": {
-    "timbits": "0.7.2",
+    "timbits": "mehtryx/timbits",
     "memjs": "0.8.5"
   },
   "scripts": {
