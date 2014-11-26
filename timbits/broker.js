@@ -25,8 +25,8 @@ timbit.params = {
 		strict: false,
 		values: ['true', 'yes']
 	},
-	key: {
-		description: 'key to access in memcache backend',
+	index: {
+		description: 'Index to access in memcache backend',
 		required: true,
 		default: 'stored',
 		strict: false,
@@ -38,7 +38,7 @@ timbit.params = {
 		strict: false,
 		values: [ 'servername,memory', 'servername|wpgccweb01,memory' ]
 	},
-	auth: {
+	key: {
 		description: 'Authentication key, if you do not have this, the app will not work.',
 		required: true,
 		default: 'testing',
@@ -68,7 +68,7 @@ timbit.examples = [
 
 timbit.eat = function( req, res, context ) {
 	// default value, could have also been supplied.
-	if ( context.auth == 'testing' ) {
+	if ( context.key == 'testing' ) {
 		context.lastWritten = new Date();
 		context.data = 'Test succeeded, note no writing or reading occurs, this just checks the service is responding';
 		timbit.render( req, res, context );
@@ -83,7 +83,7 @@ timbit.eat = function( req, res, context ) {
 		
 		// auth key is an alpha numeric value, case sensitive up to 64 characters
 		var authkey = process.env.AUTHKEY;
-		if ( context.auth !== authkey ) {
+		if ( context.key !== authkey ) {
 			res.send( 400, "Unauthorized access" );
 			return;	
 		}
@@ -99,7 +99,7 @@ timbit.eat = function( req, res, context ) {
 				};
 				var storedJSON = JSON.stringify( stored );
 
-				client.set( context.key, storedJSON, function( err, val ) {
+				client.set( context.index, storedJSON, function( err, val ) {
 					context.lastWritten = stored.lastWritten;
 					context.data = stored.data;
 					timbit.render(req, res, context);
@@ -110,7 +110,7 @@ timbit.eat = function( req, res, context ) {
 		}
 		else {
 			// reading by default
-			client.get( context.key, function( err, val ) {
+			client.get( context.index, function( err, val ) {
 				var result = JSON.parse( val );
 				context.lastWritten = ( null == result ) ? '' : result.lastWritten;
 				context.data = ( null == result ) ? '' : JSON.stringify( result.data );
