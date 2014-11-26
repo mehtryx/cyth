@@ -74,6 +74,9 @@ timbit.eat = function( req, res, context ) {
 		timbit.render( req, res, context );
 		return;
 	}
+	if ( undefined != context.item ) {
+		console.log ( 'item: ' + context.item );
+	}
 	var body = '';
 	req.on( 'data', function( data ) {
 		body += data;
