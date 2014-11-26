@@ -113,7 +113,7 @@ timbit.eat = function( req, res, context ) {
 			client.get( context.key, function( err, val ) {
 				var result = JSON.parse( val );
 				context.lastWritten = ( null == result ) ? '' : result.lastWritten;
-				context.data = ( null == result ) ? '' : result.data;
+				context.data = ( null == result ) ? '' : JSON.stringify( result.data );
 				timbit.render( req, res, context );
 			} );
 		}
