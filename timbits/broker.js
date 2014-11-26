@@ -95,7 +95,7 @@ timbit.eat = function( req, res, context ) {
 			var jsondata = parseString( xml, function ( err, result ) {
 				var stored = {
 					lastWritten: now,
-					data: jsondata
+					data: result
 				};
 				var storedJSON = JSON.stringify( stored );
 
