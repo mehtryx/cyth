@@ -9,6 +9,10 @@ var util = require( 'util' );
 var memjs = require( 'memjs' );
 var client = memjs.Client.create();
 
+// xml2js - used because microsoft still loves xml, but we would rather work in json :)
+var parseString = require("xml2js").parseString;
+
+
 //create and export the timbit
 var timbit = module.exports = new timbits.Timbit();
 
@@ -29,10 +33,10 @@ timbit.params = {
 		values: [ 'random', 'nottelling' ]
 	},
 	item: {
-		description: 'Index of item in stored data to return, i.e. name or position in list',
+		description: 'Items to return, comma seperated list ie: (servername,memory), you can also filter by specifying the value for each column ie: (servername|wpgccweb01,memory)',
 		required: false,
 		strict: false,
-		values: [ 'wpgccweb01', '10' ]
+		values: [ 'servername,memory', 'servername|wpgccweb01,memory' ]
 	},
 	auth: {
 		description: 'Authentication key, if you do not have this, the app will not work.',
@@ -40,6 +44,18 @@ timbit.params = {
 		default: 'testing',
 		strict: false,
 		values: [ 'testing' ]
+	},
+	color: {
+		description: "Color parameter for output to cythe, comma seperated list in order of items deing displayed using hexidecimal in format #RRGGBB ",
+		required: false,
+		strict: false,
+		values: [ '#52ff7f,#ff7e0e,#9d8cf9' ]
+	},
+	type: {
+		description: 'Type used to plot data on cyth chart, ie: line, area in a comma seperated list that matches the order of column output',
+		required: false,
+		strict: false,
+		values: [ 'line,area,line' ]
 	}
 };
 
@@ -75,18 +91,22 @@ timbit.eat = function( req, res, context ) {
 		// authenticated, proceeding with read/write
 		if ( undefined != req.query.write ) {
 			var now = new Date();
-			var jsondata = JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
-			var stored = {
-				lastWritten: now,
-				data: body
-			};
-			var storedJSON = JSON.stringify( stored );
+			var xml = "<root>" + body + "</root>";
+			var jsondata = parseString( xml, function ( err, result ) {
+				var stored = {
+					lastWritten: now,
+					data: jsondata
+				};
+				var storedJSON = JSON.stringify( stored );
 
-			client.set( context.key, storedJSON, function( err, val ) {
-				context.lastWritten = stored.lastWritten;
-				context.data = stored.data;
-				timbit.render(req, res, context);
-			} );
+				client.set( context.key, storedJSON, function( err, val ) {
+					context.lastWritten = stored.lastWritten;
+					context.data = stored.data;
+					timbit.render(req, res, context);
+				} );
+				
+			});//JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
+			
 		}
 		else {
 			// reading by default
