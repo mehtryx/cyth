@@ -19,7 +19,7 @@ var timbit = module.exports = new timbits.Timbit();
 timbit.about = 'Information Middleman for Cyth Application - Private, requires auth to actually use, though this help page is free.';
 
 timbit.params = {
-	write: {
+	debug: {
 		description: 'Flag indicating this is a write',
 		required: false,
 		strict: false,
@@ -32,36 +32,18 @@ timbit.params = {
 		strict: false,
 		values: [ 'random', 'nottelling' ]
 	},
-	item: {
-		description: 'Items to return, comma seperated list ie: (servername,memory), you can also filter by specifying the value for each column ie: (servername|wpgccweb01,memory)',
-		required: false,
-		strict: false,
-		values: [ 'servername,memory', 'servername|wpgccweb01,memory' ]
-	},
 	key: {
 		description: 'Authentication key, if you do not have this, the app will not work.',
 		required: true,
 		default: 'testing',
 		strict: false,
 		values: [ 'testing' ]
-	},
-	color: {
-		description: "Color parameter for output to cythe, comma seperated list in order of items deing displayed using hexidecimal in format #RRGGBB ",
-		required: false,
-		strict: false,
-		values: [ '#52ff7f,#ff7e0e,#9d8cf9' ]
-	},
-	type: {
-		description: 'Type used to plot data on cyth chart, ie: line, area in a comma seperated list that matches the order of column output',
-		required: false,
-		strict: false,
-		values: [ 'line,area,line' ]
 	}
 };
 
 timbit.examples = [
 	{
-		href: '/broker/?key=random&auth=testing',
+		href: '/broker/?index=random&key=testing',
 		caption: 'Retrieve data from key named random'
 	}
 ];
@@ -70,20 +52,17 @@ timbit.eat = function( req, res, context ) {
 	// default value, could have also been supplied.
 	if ( context.key == 'testing' ) {
 		context.lastWritten = new Date();
-		context.data = 'Test succeeded, note no writing or reading occurs, this just checks the service is responding';
+		context.data = 'Test succeeded, note no writing or reading occurs, this just checks the service is responding without authentication';
 		timbit.render( req, res, context );
 		return;
 	}
-	if ( undefined != context.item ) {
-		console.log ( 'item: ' + context.item );
-	}
+	
 	var body = '';
 	req.on( 'data', function( data ) {
 		body += data;
 	} );
 	
 	req.on( 'end', function () {
-		
 		// auth key is an alpha numeric value, case sensitive up to 64 characters
 		var authkey = process.env.AUTHKEY;
 		if ( context.key !== authkey ) {
@@ -92,7 +71,7 @@ timbit.eat = function( req, res, context ) {
 		}
 	
 		// authenticated, proceeding with read/write
-		if ( undefined != req.query.write ) {
+		if ( undefined == req.query.debug ) {
 			var now = new Date();
 			var xml = "<root>" + body + "</root>";
 			var jsondata = parseString( xml, function ( err, result ) {
@@ -107,12 +86,10 @@ timbit.eat = function( req, res, context ) {
 					context.data = stored.data;
 					timbit.render(req, res, context);
 				} );
-				
-			});//JSON.stringify( util.inspect( req, { showHidden: true, depth: 1 } ) );
-			
+			});
 		}
 		else {
-			// reading by default
+			// debug, show contents instead of writing
 			client.get( context.index, function( err, val ) {
 				var result = JSON.parse( val );
 				context.lastWritten = ( null == result ) ? '' : result.lastWritten;
