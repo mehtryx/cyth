@@ -5,7 +5,7 @@
 
 	border: 1px #888888 solid;
 
-	background-color: #140000;
+	background-color: #333;
 
 	color: #bbbbbb;
 	font-size: 24px;
@@ -18,12 +18,14 @@
 	color: #bbbbbb;
 	font-size: 24px;
 	font-weight: bold;
+	font-family: Arial, Sans-serif;
 }
 .grey {
 	color: #bbbbbb;
+	font-family: Arial, Sans-serif;
 }
 .small {
-	font-size: 8px;
+	font-size: 10px;
 	color: #bbbbbb;
 	font-weight: inherit;
 	font-family: inherit;
