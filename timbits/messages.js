@@ -63,12 +63,12 @@ timbit.eat = function(req, res, context) {
 		for ( var row in result.data.root.row ) {
 			var msg = result.data.root.row[row]
 			if ( 'alerts' == msg.tag ) {
-				alerts.push( { 'message': msg.message[0] } );
-				console.log( msg.message[0] );
+				alerts.push( { 'message': msg.message } );
+				console.log( msg.message );
 			}
 			else {
-				info.push( { 'message': msg.message[0] } );
-				console.log( msg.message[0] );
+				info.push( { 'message': msg.message } );
+				console.log( msg.message );
 			}
 		}
 		
