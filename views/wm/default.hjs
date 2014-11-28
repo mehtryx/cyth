@@ -1,1 +1,7 @@
-<h1>Default {{name}} Timbit View</h1>
+<span>Color: {{color}}</span><br />
+<span>Type: {{type}}</span>
+<div>Servers: {{servers}}
+</div>
+
+<div>Headings: {{headings}}
+</div>

@@ -20,7 +20,7 @@ timbit.about = 'Information Middleman for Cyth Application - Private, requires a
 
 timbit.params = {
 	debug: {
-		description: 'Flag indicating this is a write',
+		description: 'Flag, when set will not write, but instead displays content in specified index',
 		required: false,
 		strict: false,
 		values: ['true', 'yes']
@@ -33,7 +33,7 @@ timbit.params = {
 		values: [ 'random', 'nottelling' ]
 	},
 	key: {
-		description: 'Authentication key, if you do not have this, the app will not work.',
+		description: 'Authentication key, if you do not have this, the app will not work except when testing end point.',
 		required: true,
 		default: 'testing',
 		strict: false,
@@ -49,6 +49,12 @@ timbit.examples = [
 ];
 
 timbit.eat = function( req, res, context ) {
+	// Must be a POST request, unless testing if endpoint is alive, or debug to read contents
+	if ( 'POST' != req.method && 'testing' != context.key && undefined == context.debug ) {
+		res.send( 405, "Method Not Allowed" );
+		return;
+	}
+	
 	// default value, could have also been supplied.
 	if ( context.key == 'testing' ) {
 		context.lastWritten = new Date();
@@ -66,12 +72,12 @@ timbit.eat = function( req, res, context ) {
 		// auth key is an alpha numeric value, case sensitive up to 64 characters
 		var authkey = process.env.AUTHKEY;
 		if ( context.key !== authkey ) {
-			res.send( 400, "Unauthorized access" );
+			res.send( 401, "Unauthorized" );
 			return;	
 		}
 	
 		// authenticated, proceeding with read/write
-		if ( undefined == req.query.debug ) {
+		if ( undefined == context.debug ) {
 			var now = new Date();
 			var xml = "<root>" + body + "</root>";
 			var jsondata = parseString( xml, function ( err, result ) {

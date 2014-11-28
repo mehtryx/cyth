@@ -41,9 +41,16 @@ timbit.examples = [
 ];
 
 timbit.eat = function(req, res, context) {
+	// Must be a GET request,
+	if ( 'GET' != req.method ) {
+		res.send( 405, "Method Not Allowed" );
+		return;
+	}
+	
+	// Must authenticate
 	var authkey = process.env.AUTHKEY;
 	if ( context.key !== authkey ) {
-		res.send( 400, "Unauthorized access" );
+		res.send( 401, "Unauthorized" );
 		return;	
 	}
 	
@@ -64,7 +71,7 @@ timbit.eat = function(req, res, context) {
 				console.log( msg.message[0] );
 			}
 		}
-
+		
 		
 		context.alerts = Object.keys(alerts).length ? { 'msgs': alerts } : null;
 		context.info = Object.keys(info).length ? { 'msgs': info } : null;
