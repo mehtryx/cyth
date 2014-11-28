@@ -114,19 +114,22 @@ timbit.eat = function(req, res, context) {
 		
 		var server = _.where( result.data.root.row, { 'ServerName': servers[0] } ); // only processing one server for now
 		
-		var heading = 'DateTime';
+		var heading = ( 'gauge' == context.type.toLowerCase() ) ? '' : 'DateTime';
 		for( var iHead=0, iLen=Object.keys(header).length; iHead<iLen; iHead++ ) {
-			heading += ',' + header[iHead];
+			heading += ( ( 'gauge' == context.type.toLowerCase() ) ? '' : ',' ) + header[iHead];
 		}
 		context.heading=heading;
 		
 		var data = [];
 		for( var row in server ) {
-			console.dir( server[row].counter.toLowerCase() );
-			console.dir( context.counter.toLowerCase() )
-			if ( server[row].counter.toLowerCase() == context.counter.toLowerCase() )
-			data.push( server[row].datetime + ',' + server[row].value );
-			console.dir( data );
+			if ( server[row].counter.toLowerCase() == context.counter.toLowerCase() ) {
+				if ( 'gauge' == context.type.toLowerCase() ) {
+					data.push( server[row].value + ',100' );
+				}
+				else {
+					data.push( server[row].datetime + ',' + server[row].value );
+				}
+			}
 		}
 		context.data = data;
 		context.color = 'Color,' + context.color;
