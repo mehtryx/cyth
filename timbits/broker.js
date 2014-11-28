@@ -10,7 +10,9 @@ var memjs = require( 'memjs' );
 var client = memjs.Client.create();
 
 // xml2js - used because microsoft still loves xml, but we would rather work in json :)
-var parseString = require("xml2js").parseString;
+var xml2js = require("xml2js");
+var parser = new xml2js.Parser({explicitArray : false}); // prevents single element arrays in json
+var parseString = parser.parseString;
 
 
 //create and export the timbit

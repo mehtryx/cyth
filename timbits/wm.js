@@ -119,6 +119,9 @@ timbit.eat = function(req, res, context) {
 		context.color = 'Color,' + context.color;
 		context.type = 'Type,' + context.type;
 		
+		var server = _.where( result.data.root.row, { 'ServerName': [ 'WPGPDWEB85' ] } );
+		console.dir( server );
+		console.dir( result.data.root.row );
 		timbit.render( req, res, context );
 	} );
 };
