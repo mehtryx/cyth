@@ -120,6 +120,7 @@ timbit.eat = function(req, res, context) {
 		}
 		context.heading=heading;
 		
+		heading += ( ( 'gauge' == context.type.toLowerCase() ) ? ',total' : ',' );
 		var data = [];
 		for( var row in server ) {
 			if ( server[row].counter.toLowerCase() == context.counter.toLowerCase() ) {
