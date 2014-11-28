@@ -118,9 +118,10 @@ timbit.eat = function(req, res, context) {
 		for( var iHead=0, iLen=Object.keys(header).length; iHead<iLen; iHead++ ) {
 			heading += ( ( 'gauge' == context.type.toLowerCase() ) ? '' : ',' ) + header[iHead];
 		}
-		context.heading=heading;
+		
 		
 		heading += ( ( 'gauge' == context.type.toLowerCase() ) ? ',total' : ',' );
+		context.heading=heading;
 		var data = [];
 		for( var row in server ) {
 			if ( server[row].counter.toLowerCase() == context.counter.toLowerCase() ) {
