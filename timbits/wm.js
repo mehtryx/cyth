@@ -109,19 +109,29 @@ timbit.eat = function(req, res, context) {
 		}
 		else {
 			// figure out how many columns we have here...(i.e. number of unique counters)
-			
+			header.push( toTitleCase( context.counter ) );
 		}
 		
-		context.servers = JSON.stringify( servers );
-		context.headings = JSON.stringify( header );
-		console.dir(context.servers);
-		console.dir(context.headings);
+		var server = _.where( result.data.root.row, { 'ServerName': servers[0] } ); // only processing one server for now
+		
+		var heading = 'DateTime';
+		for( var iHead=0, iLen=Object.keys(header).length; iHead<iLen; iHead++ ) {
+			heading += ',' + header[iHead];
+		}
+		context.heading=heading;
+		
+		var data = [];
+		for( var row in server ) {
+			console.dir( server[row].counter.toLowerCase() );
+			console.dir( context.counter.toLowerCase() )
+			if ( server[row].counter.toLowerCase() == context.counter.toLowerCase() )
+			data.push( server[row].datetime + ',' + server[row].value );
+			console.dir( data );
+		}
+		context.data = data;
 		context.color = 'Color,' + context.color;
 		context.type = 'Type,' + context.type;
-		
-		var server = _.where( result.data.root.row, { 'ServerName': [ 'WPGPDWEB85' ] } );
-		console.dir( server );
-		console.dir( result.data.root.row );
+		res.setHeader("Content-Type", "text/plain");
 		timbit.render( req, res, context );
 	} );
 };
