@@ -202,7 +202,7 @@ timbit.eat = function(req, res, context) {
 		}
 		
 		// construct data
-		context.header = 'Requests/Sec,total'; // Only the first heading shows on graph, but second needed to indicate second data
+		context.header = 'Requests/Sec over CPU,total'; // Only the first heading shows on graph, but second needed to indicate second data
 		// context.data was specified above when calculating total
 		context.widgetType = 'Type,gauge'; // the type of wigit on cyth
 		context.color = 'Color,' + chosenColor;
