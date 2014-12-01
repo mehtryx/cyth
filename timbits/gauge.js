@@ -47,7 +47,7 @@ timbit.params = {
 		required: true,
 		strict: true,
 		default: 0,
-		values: [ 0, 1 ]
+		values: [ '0', '1' ]
 	},
 	key: {
 		description: 'Authentication key, if you do not have this, the app will not work.',
