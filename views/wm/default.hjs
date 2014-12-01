@@ -2,6 +2,5 @@
 {{#data}}
 {{.}}
 {{/data}}
-{{color}}
 {{type}}
 {{showlabel}}
