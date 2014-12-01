@@ -133,7 +133,7 @@ timbit.eat = function(req, res, context) {
 				}
 			}
 		}
-		context.data = '90,100'; //data;
+		context.data = [ '90, 100' ]; //data;
 		context.color = 'Color,' + context.color;
 		context.type = 'Type,' + context.type;
 		context.showlabel = 'LabelShow,0';
