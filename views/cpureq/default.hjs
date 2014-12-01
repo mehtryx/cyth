@@ -1,0 +1,9 @@
+{{header}}
+{{data}}
+{{#color}}
+{{color}}
+{{/color}}
+{{widgetType}}
+{{#labelShow}}
+{{labelShow}}
+{{/labelShow}}
