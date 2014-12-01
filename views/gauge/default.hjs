@@ -1,1 +1,9 @@
-<h1>Default {{name}} Timbit View</h1>
+{{header}}
+{{data}}
+{{#color}}
+{{color}}
+{{/color}}
+{{widgetType}}
+{{#labelShow}}
+{{labelShow}}
+{{/labelShow}}

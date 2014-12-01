@@ -24,7 +24,7 @@ timbit.params = {
 		values: [ 'wm', 'stored', 'messages' ]
 	},
 	servername: {
-		description: 'servername to return (multiples allowed)',
+		description: 'servername to return',
 		required: true,
 		strict: false,
 		values: [ 'wpgccweb01', 'wpgccweb01,wpgpdweb84' ]
@@ -114,7 +114,7 @@ timbit.eat = function(req, res, context) {
 		}
 		
 		// check if we have both data values
-		if ( undefined == cpu || undefined == req ) {
+		if ( undefined == cpu || undefined == requests ) {
 			// we will send an empty data field, causing the widgit to be blank.
 			context.data = '';
 		}
