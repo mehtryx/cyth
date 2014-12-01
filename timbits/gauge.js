@@ -220,7 +220,7 @@ timbit.eat = function(req, res, context) {
 		// context.data was specified above when calculating total
 		context.widgetType = 'Type,gauge'; // the type of wigit on cyth
 		context.color = 'Color,' + chosenColor;
-		context.labelShow = 'LabelShow,' + context.labelchow; // prevents numbers from showing under gauge
+		context.labelShow = 'LabelShow,' + context.labelshow; // prevents numbers from showing under gauge
 		res.setHeader("Content-Type", "text/plain");
 		timbit.render( req, res, context );
 	} );
