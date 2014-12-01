@@ -136,6 +136,7 @@ timbit.eat = function(req, res, context) {
 		context.data = data;
 		context.color = 'Color,' + context.color;
 		context.type = 'Type,' + context.type;
+		context.showlabel = 'LabelShow,1';
 		res.setHeader("Content-Type", "text/plain");
 		timbit.render( req, res, context );
 	} );
